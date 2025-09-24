@@ -25,3 +25,7 @@ tasks.register('examples', JavaExec) {
     mainClass = 'com.example.geonotesteaching.GeoNotes'
     args = ['examples']
 }
+
+run {
+    standardInput = System.in
+}
