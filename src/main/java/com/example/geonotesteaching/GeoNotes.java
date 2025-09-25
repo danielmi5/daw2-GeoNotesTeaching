@@ -193,6 +193,12 @@ public class GeoNotes {
     }
 
     private static void listLatestNotes() {
+        System.out.print("\nIntroduce la el numero de notas a mostrar: ");
+        int number = Integer.parseInt(scanner.nextLine());
+        var recentNotes = timeline.latest(number);
+        System.out.println("\n--- Notas mas recientes ---");
+        recentNotes.forEach(note -> System.out.println("ID: " + note.id() + " | Título: " + note.title() + " | Contenido: " + note.content()));
+
 
     }
 
