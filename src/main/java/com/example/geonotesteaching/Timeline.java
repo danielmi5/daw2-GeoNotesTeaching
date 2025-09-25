@@ -25,11 +25,14 @@ final class Timeline {
                           "id": %d,
                           "title": "%s",
                           "content": "%s",
-                          "location": { "lat": %f, "lon": %f },
+                          "location": { 
+                            "lat": %f, 
+                            "lon": %f 
+                            },
                           "createdAt": "%s"
                         }
                         """.formatted(
-                            note.id(), note.title(), note.content(),
+                            note.id(), note.title(), note.content().replace("\"","\\\"") ,
                             note.location().lat(), note.location().lon(),
                             note.createdAt()))
                 .sorted(Comparator.reverseOrder())
