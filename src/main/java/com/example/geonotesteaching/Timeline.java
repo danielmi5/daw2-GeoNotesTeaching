@@ -23,7 +23,7 @@ final class Timeline {
                 .map(note -> """
                         {
                           "id": %d,
-                          "title": "%s",
+                          "title": "%s"
                           "content": "%s",
                           "location": { 
                             "lat": %f, 
