@@ -16,4 +16,14 @@ final class Describe {
             case Video v -> "Vídeo";
         };
     }
+
+    static int mediaPixels(Object o) {
+        if (o instanceof Photo p) {
+            return p.width() * p.height();
+        } else if (o instanceof Video v) {
+            return v.width() * v.height();
+        } else {
+            return 0;
+        }
+    }
 }
