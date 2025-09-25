@@ -14,6 +14,9 @@ final class Timeline {
     public Note getNote(long id) { return notes.get(id); }
     public Map<Long, Note> getNotes() { return notes; }
 
+    //public java.util.List<Note> latest(int n)
+
+
     // Esta clase final genera la salida JSON usando 'text blocks'.
     public final class Render extends AbstractExporter implements Exporter {
         @Override public String export() {
