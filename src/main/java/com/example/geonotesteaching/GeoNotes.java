@@ -1,6 +1,7 @@
 package com.example.geonotesteaching;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -93,7 +94,7 @@ public class GeoNotes {
         System.out.println("\n--- Menú ---");
         System.out.println("1. Crear una nueva nota");
         System.out.println("2. Listar todas las notas");
-        System.out.println("3. Filtrar notas por palabra clave");
+        System.out.println("3. Búsqueda avanzada");
         System.out.println("4. Exportar notas a JSON (Text Blocks)");
         System.out.println("5. Listar últimas N");
         System.out.println("6. Exportar notas a Markdown (Text Blocks)");
@@ -155,20 +156,73 @@ public class GeoNotes {
         timeline.getNotes().forEach((id, note) -> System.out.printf("ID: %d | Título: %s | Contenido: %s%n", id, note.title(), note.content()));
     }
 
-    private static void filterNotes() {
-        System.out.print("\nIntroduce la palabra clave para filtrar: ");
+    private static List<Note> filterKeyWord(){
+        System.out.print("\nIntroduce la palabra clave para filtrar (ENTER para omitir): ");
         var keyword = scanner.nextLine();
-        System.out.println("\n--- Resultados de búsqueda ---");
+        if (!keyword.isBlank()) {
+            /*
+             * Streams (desde Java 8) — muy similares a las funciones de colección en Kotlin.
+             * Filtramos por título o contenido y recogemos en una List inmutable (toList() desde Java 16 retorna una lista no modificable).
+             */
+            return timeline.getNotes().values().stream().filter(n -> n.title().contains(keyword) || n.content().contains(keyword)).toList();
+        } else return timeline.getNotes().values().stream().toList();
+    }
 
-        /*
-         * Streams (desde Java 8) — muy similares a las funciones de colección en Kotlin.
-         * Filtramos por título o contenido y recogemos en una List inmutable (toList() desde Java 16 retorna una lista no modificable).
-         */
-        var filtered = timeline.getNotes().values().stream().filter(n -> n.title().contains(keyword) || n.content().contains(keyword)).toList();
+    private static boolean inRange(String minStr, String maxStr, double value) {
+
+
+        if (minStr.isEmpty() && maxStr.isEmpty()) {
+            return true;
+        }
+
+        if (!minStr.isEmpty() && maxStr.isEmpty()) {
+            double min = Double.parseDouble(minStr);
+            return value >= min;
+        }
+
+        if (minStr.isEmpty()) {
+            double max = Double.parseDouble(maxStr);
+            return value <= max;
+        }
+
+        double min = Double.parseDouble(minStr);
+        double max = Double.parseDouble(maxStr);
+        return value >= min && value <= max;
+    }
+
+    private static List<Note> miniFilter(String tipo, List<Note> list) {
+        System.out.printf("\nIntroduce el rango para filtrar %s >>", tipo);
+        System.out.print("\nmin  (ENTER para omitir): ");
+        String minStr = scanner.nextLine().trim();
+        System.out.print("max  (ENTER para omitir): ");
+        String maxStr = scanner.nextLine().trim();
+        switch (tipo) {
+            case "lat" -> {
+                return list.stream().filter(n -> inRange(minStr, maxStr, n.location().lat())).toList();
+            }
+            case "lon" -> {
+                return list.stream().filter(n -> inRange(minStr, maxStr, n.location().lon())).toList();
+            }
+            default -> throw new IllegalArgumentException();
+        }
+    }
+
+    private static List<Note> filterRange(List<Note> lista){
+        List<Note> list = miniFilter("lat", lista);;
+        return miniFilter("lon", list);
+
+    }
+
+    private static void filterNotes() {
+        var filtered = filterKeyWord();
+        filtered = filterRange(filtered);
+
+        System.out.println("\n--- Resultados de búsqueda ---");
         if (filtered.isEmpty()) {
-            System.out.println("No se encontraron notas con: " + keyword);
+            System.out.println("No se encontraron notas con esos filtros");
             return;
         }
+
         filtered.forEach(n -> System.out.printf("ID: %d | %s | %s%n", n.id(), n.title(), n.content()));
     }
 
