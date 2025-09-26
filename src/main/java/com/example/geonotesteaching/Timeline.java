@@ -52,4 +52,21 @@ final class Timeline {
                     """.formatted(notesList);
         }
     }
+
+    // Esta clase final genera la salida Markdown usando 'text blocks' en formato de lista.
+    public final class RenderMarkdown extends AbstractExporter implements Exporter {
+        @Override public String export() {
+            var notesList = notes.values().stream()
+                    .map(note -> """
+                    - [ ID %d] %s — (%f, %f) — %s
+                    """.formatted(note.id(), note.title(), note.location().lat(), note.location().lon(), note.createdAt().toString().substring(0,10)))
+                    .collect(Collectors.joining(""));
+
+            return """
+                # GeoNotes
+                %s
+                """.formatted(notesList);
+        }
+    }
+
 }

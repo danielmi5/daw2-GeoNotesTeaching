@@ -74,7 +74,8 @@ public class GeoNotes {
                     case 3 -> filterNotes();
                     case 4 -> exportNotesToJson();
                     case 5 -> listLatestNotes();
-                    case 6 -> running = false;
+                    case 6 -> exportNotesToMarkdown();
+                    case 7 -> running = false;
                     default -> System.out.println("❌ Opción no válida. Inténtalo de nuevo.");
                 }
             } catch (NumberFormatException e) {
@@ -95,7 +96,8 @@ public class GeoNotes {
         System.out.println("3. Filtrar notas por palabra clave");
         System.out.println("4. Exportar notas a JSON (Text Blocks)");
         System.out.println("5. Listar últimas N");
-        System.out.println("6. Salir");
+        System.out.println("6. Exportar notas a Markdown (Text Blocks)");
+        System.out.println("7. Salir");
         System.out.print("Elige una opción: ");
     }
 
@@ -190,6 +192,17 @@ public class GeoNotes {
 
         System.out.println("\n--- Exportando notas a JSON ---");
         System.out.println(json);
+    }
+
+    private static void exportNotesToMarkdown() {
+
+        var renderer = timeline.new RenderMarkdown();
+
+
+        String markdown = renderer.export();
+
+        System.out.println("\n--- Exportando notas a Markdown ---");
+        System.out.println(markdown);
     }
 
     private static void listLatestNotes() {
