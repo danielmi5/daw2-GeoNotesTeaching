@@ -155,7 +155,10 @@ public class GeoNotes {
 
     private static void filterNotes() {
         System.out.print("\nIntroduce la palabra clave para filtrar: ");
+
         var keyword = scanner.nextLine();
+
+
         System.out.println("\n--- Resultados de búsqueda ---");
 
         /*
@@ -194,12 +197,18 @@ public class GeoNotes {
 
     private static void listLatestNotes() {
         System.out.print("\nIntroduce la el numero de notas a mostrar: ");
-        int number = Integer.parseInt(scanner.nextLine());
-        var recentNotes = timeline.latest(number);
-        System.out.println("\n--- Notas mas recientes ---");
-        recentNotes.forEach(note -> System.out.println("ID: " + note.id() + " | Título: " + note.title() + " | Contenido: " + note.content()));
-
-
+        boolean running = true;
+        while (running) {
+            try {
+                int number = Integer.parseInt(scanner.nextLine());
+                var recentNotes = timeline.latest(number);
+                System.out.println("\n--- Notas mas recientes ---");
+                recentNotes.forEach(note -> System.out.println("ID: " + note.id() + " | Título: " + note.title() + " | Contenido: " + note.content()));
+                running = false;
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Entrada no válida. Por favor, ingresa un número.");
+            }
+        }
     }
 
     private static void seedExamples() {
