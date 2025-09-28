@@ -77,7 +77,8 @@ public class GeoNotes {
                     case 5 -> listLatestNotes();
                     case 6 -> exportNotesToMarkdown();
                     case 7 -> listReversedNotes();
-                    case 8 -> running = false;
+                    case 8 -> checkLocation();
+                    case 9 -> running = false;
                     default -> System.out.println("❌ Opción no válida. Inténtalo de nuevo.");
                 }
             } catch (NumberFormatException e) {
@@ -100,7 +101,8 @@ public class GeoNotes {
         System.out.println("5. Listar últimas N");
         System.out.println("6. Exportar notas a Markdown (Text Blocks)");
         System.out.println("7. Obtener notas revertidas");
-        System.out.println("8. Salir");
+        System.out.println("8. Consultar ubicación");
+        System.out.println("9. Salir");
         System.out.print("Elige una opción: ");
     }
 
@@ -277,6 +279,22 @@ public class GeoNotes {
         recentNotes.forEach(note -> System.out.println("ID: " + note.id() + " | Título: " + note.title() + " | Contenido: " + note.content()));
 
 
+    }
+
+    private static void checkLocation() {
+        try {
+            System.out.print("Introduce la latitud: ");
+            double lat = Double.parseDouble(scanner.nextLine().trim());
+            System.out.print("Introduce la longitud: ");
+            double lon = Double.parseDouble(scanner.nextLine().trim());
+
+            GeoPoint point = new GeoPoint(lat, lon);
+            String result = Match.where(point);
+            System.out.println("La ubicación es " + result);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada no válida, debe ser un número");
+        }
     }
 
     private static void seedExamples() {
