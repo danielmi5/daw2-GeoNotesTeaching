@@ -39,12 +39,13 @@ final class Timeline {
                             "lat": %f, 
                             "lon": %f 
                             },
-                          "createdAt": "%s"
+                          "createdAt": "%s",
+                          "attachment": "%s"
                         }
                         """.formatted(
                             note.id(), note.title(), note.content().replace("\"","\\\"") ,
                             note.location().lat(), note.location().lon(),
-                            note.createdAt()))
+                            note.createdAt(), (note.attachment() == null) ? "No tiene nada adjuntado" : Describe.describeAttachment(note.attachment()) ))
                 .sorted(Comparator.reverseOrder())
                 .collect(Collectors.joining(",\n"));
             return """
