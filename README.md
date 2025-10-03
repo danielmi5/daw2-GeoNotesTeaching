@@ -10,3 +10,15 @@ Incluye Gradle Wrapper (scripts) para facilitar la ejecución.
   ./gradlew run
   ./gradlew examples
   ```
+
+## Ejercicios completados
+
+- Bloque A ✅
+- Bloque B ✅
+- Bloque C ✅
+- Bloque D ✅
+- Bloque E ✅
+- Bloque F ✅
+- Bloque G ✅
+
+Todos los ejercicios de cada bloque hechos.
